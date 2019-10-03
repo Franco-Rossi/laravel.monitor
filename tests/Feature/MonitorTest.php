@@ -19,7 +19,6 @@ class MonitorTest extends TestCase
      */
     public function saves_json_in_db()
     {
-        $this->withoutExceptionHandling();
 
         $response = $this->post('/', [
             "title" => "Titulo",
@@ -52,7 +51,6 @@ class MonitorTest extends TestCase
      */
     public function saves_json_in_monolog()
     {
-        $this->withoutExceptionHandling();
 
         $response = $this->post('/', [
             "title" => "Titulo",
@@ -84,7 +82,6 @@ class MonitorTest extends TestCase
 
     public function get_info_about_logs()
     {
-       $this->withoutExceptionHandling();
 
        $response = $this->post('/', [
         "title" => "Titulo",
