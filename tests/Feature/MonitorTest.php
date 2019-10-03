@@ -45,7 +45,7 @@ class MonitorTest extends TestCase
 
 
     /**
-     * Ensures that the event received is saved in the a log.
+     * Ensures that the event received is saved in the log.
      *
      * @test
      */
