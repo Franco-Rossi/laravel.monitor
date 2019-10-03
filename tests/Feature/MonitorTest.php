@@ -13,7 +13,7 @@ class MonitorTest extends TestCase
     use RefreshDatabase;
 
     /**
-     * A basic feature test example.
+     * Ensures that the event received is saved in the database.
      *
      * @test
      */
@@ -45,7 +45,7 @@ class MonitorTest extends TestCase
 
 
     /**
-     * A basic feature test example.
+     * Ensures that the event received is saved in the a log.
      *
      * @test
      */
@@ -75,7 +75,7 @@ class MonitorTest extends TestCase
     }
 
     /**
-     * A basic feature test example.
+     * Ensures that the log is sent to the frontend.
      *
      * @test
      */
