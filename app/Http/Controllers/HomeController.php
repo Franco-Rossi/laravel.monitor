@@ -30,28 +30,28 @@ class HomeController extends Controller
 
         switch($data["config"]["level"]){
             case "emergency": 
-                Logs::emergency($data["title"], $data);
+                Logs::channel("monitor")->emergency($data["title"], $data);
                 break;
             case "alert": 
-                Logs::alert($data["title"], $data);
+                Logs::channel("monitor")->alert($data["title"], $data);
                 break;
             case "critical": 
-                Logs::critical($data["title"], $data);
+                Logs::channel("monitor")->critical($data["title"], $data);
                 break;
             case "error": 
-                Logs::error($data["title"], $data);
+                Logs::channel("monitor")->error($data["title"], $data);
                 break;
             case "warning": 
-                Logs::warning($data["title"], $data);
+                Logs::channel("monitor")->warning($data["title"], $data);
                 break;
             case "notice": 
-                Logs::notice($data["title"], $data);
+                Logs::channel("monitor")->notice($data["title"], $data);
                 break;
             case "info": 
-                Logs::info($data["title"], $data);
+                Logs::channel("monitor")->info($data["title"], $data);
                 break;
             default: 
-                Logs::debug($data["title"], $data);
+                Logs::channel("monitor")->debug($data["title"], $data);
                 break;
         }
 
@@ -76,29 +76,30 @@ class HomeController extends Controller
         $date = $data['date'];
 
 
-        $logdb = Log::where("created_at", "LIKE", "$date%")->get();
-        $logfile = file(storage_path().'\logs\laravel-'. $date . '.log');
+        $db_log = Log::where("created_at", "LIKE", "$date%")->get();
+        $file_log = file(storage_path().'\logs\events-'. $date . '.log');
 
-        $response = [];
+        $responseFile = [];
 
 
-        foreach ($logfile as $log_line){
-            $explodedLog = explode(" " , $log_line);
+        foreach ($file_log as $file_line){
+            $explodedLog = explode(" " , $file_line);
+            dd($explodedLog);
 
-            $response[$explodedLog[2]][] = ["date" => $explodedLog[0] . $explodedLog[1],
+            $responseFile[$explodedLog[2]][] = ["date" => $explodedLog[0] . $explodedLog[1],
                                         "title" => $explodedLog[3],
                                         "data" => json_decode($explodedLog[4])
             ];
             break;
         }
 
-        foreach($logdb as $db_line){
+        foreach($db_log as $db_line){
             $db_line->data = json_decode($db_line->data);
             $responseDb[$db_line->level] = $db_line;
         }
 
 
         return response()->json(["db"=>$responseDb, 
-                                "file"=>$response]);
+                                "file"=>$responseFile]);
     }
 }

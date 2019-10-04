@@ -100,7 +100,7 @@ class MonitorTest extends TestCase
         ]
     ]);
 
-       $response = $this->get('/?date=2019-10-03');
+       $response = $this->get('/?date=2019-10-04');
 
 
        $response->assertJsonFragment([
