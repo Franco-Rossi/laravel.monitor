@@ -26,6 +26,8 @@ class HomeController extends Controller
     }
 
     public function saveFile($data){
+        
+        $data = str_replace(" ", "_", $data);
 
 
         switch($data["config"]["level"]){
@@ -84,12 +86,12 @@ class HomeController extends Controller
 
         foreach ($file_log as $file_line){
             $explodedLog = explode(" " , $file_line);
-            dd($explodedLog);
 
             $responseFile[$explodedLog[2]][] = ["date" => $explodedLog[0] . $explodedLog[1],
                                         "title" => $explodedLog[3],
                                         "data" => json_decode($explodedLog[4])
             ];
+
             break;
         }
 
