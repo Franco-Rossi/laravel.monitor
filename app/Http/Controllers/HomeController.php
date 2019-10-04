@@ -27,9 +27,11 @@ class HomeController extends Controller
 
     public function saveFile($data){
         
-        $data = str_replace(" ", ' ', $data);
-
-
+        
+        $data = str_replace(" ", " ", $data);
+        // Replaces normal space with $nbsp;
+        // First parameter is normal space, second one is %nbsp; in ascii (alt+255)
+        
         switch($data["config"]["level"]){
             case "emergency": 
                 Logs::channel("monitor")->emergency($data["title"], $data);
