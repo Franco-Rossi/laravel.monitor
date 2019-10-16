@@ -3,65 +3,66 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log as Logs; 
+use Illuminate\Support\Facades\Log as Logs;
 use App\Log;
 use Storage;
 
 class HomeController extends Controller
 {
-    public function index(Request $request){
+    public function index(Request $request)
+    {
 
         $data = $request->all();
 
-        if($data["config"]["db"]){
+        if ($data["config"]["db"]) {
             $this->saveDB($data);
         }
 
-        if($data["config"]["file"]){
+        if ($data["config"]["file"]) {
             $this->saveFile($data);
         }
 
         return response(200);
-
     }
 
-    public function saveFile($data){
-        
-        
+    public function saveFile($data)
+    {
+
+
         $data = str_replace(" ", " ", $data);
         // Replaces normal space with $nbsp;
         // First parameter is normal space, second one is %nbsp; in ascii (alt+255)
-        
-        switch($data["config"]["level"]){
-            case "emergency": 
+
+        switch ($data["config"]["level"]) {
+            case "emergency":
                 Logs::channel("monitor")->emergency($data["title"], $data);
                 break;
-            case "alert": 
+            case "alert":
                 Logs::channel("monitor")->alert($data["title"], $data);
                 break;
-            case "critical": 
+            case "critical":
                 Logs::channel("monitor")->critical($data["title"], $data);
                 break;
-            case "error": 
+            case "error":
                 Logs::channel("monitor")->error($data["title"], $data);
                 break;
-            case "warning": 
+            case "warning":
                 Logs::channel("monitor")->warning($data["title"], $data);
                 break;
-            case "notice": 
+            case "notice":
                 Logs::channel("monitor")->notice($data["title"], $data);
                 break;
-            case "info": 
+            case "info":
                 Logs::channel("monitor")->info($data["title"], $data);
                 break;
-            default: 
+            default:
                 Logs::channel("monitor")->debug($data["title"], $data);
                 break;
         }
-
     }
 
-    public function saveDB($data){
+    public function saveDB($data)
+    {
         Log::create([
             "title" => $data["title"],
             "from" => $data['from'],
@@ -73,38 +74,43 @@ class HomeController extends Controller
         ]);
     }
 
-    
-    public function show(Request $request){
+
+    public function show(Request $request)
+    {
 
         $data = $request->all();
         $date = $data['date'];
 
 
         $db_log = Log::where("created_at", "LIKE", "$date%")->get();
-        $file_log = file(storage_path().'\logs\events-'. $date . '.log');
+        $file_log = file(storage_path() . '\logs\events-' . $date . '.log');
 
         $responseFile = [];
 
 
-        foreach ($file_log as $file_line){
-            $explodedLog = explode(" " , $file_line);
+        foreach ($file_log as $file_line) {
+            $explodedLog = explode(" ", $file_line);
 
 
-            $responseFile[$explodedLog[2]][] = ["date" => $explodedLog[0] . $explodedLog[1],
-                                        "title" => $explodedLog[3],
-                                        "data" => json_decode($explodedLog[4])
+            $responseFile[$explodedLog[2]][] = [
+                "date" => $explodedLog[0] . $explodedLog[1],
+                "title" => $explodedLog[3],
+                "data" => json_decode($explodedLog[4])
             ];
 
             break;
         }
 
-        foreach($db_log as $db_line){
+
+        foreach ($db_log as $db_line) {
             $db_line->data = json_decode($db_line->data);
             $responseDb[$db_line->level] = $db_line;
         }
 
 
-        return response()->json(["db"=>$responseDb, 
-                                "file"=>$responseFile]);
+        return response()->json([
+            "db" => $responseDb,
+            "file" => $responseFile
+        ]);
     }
 }
