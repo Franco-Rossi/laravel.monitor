@@ -91,8 +91,10 @@ class HomeController extends Controller
         foreach ($file_log as $file_line) {
             $explodedLog = explode(" ", $file_line);
 
+            // Normalizes the 'level' atribute to be the same as in the DB
+            $level = strtolower(preg_replace(['/local./', '/:/'], "", $explodedLog[2]));
 
-            $responseFile[$explodedLog[2]][] = [
+            $responseFile[$level][] = [
                 "date" => $explodedLog[0] . $explodedLog[1],
                 "title" => $explodedLog[3],
                 "data" => json_decode($explodedLog[4])
@@ -113,4 +115,5 @@ class HomeController extends Controller
             "file" => $responseFile
         ]);
     }
+    
 }
