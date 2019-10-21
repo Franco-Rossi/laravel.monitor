@@ -10,7 +10,8 @@ use App\Log;
 class MonitorTest extends TestCase
 {
 
-    use RefreshDatabase;
+    // use RefreshDatabase;
+    // Don't use "RefreshDatabase" on production
 
     /**
      * Ensures that the event received is saved in the database.
