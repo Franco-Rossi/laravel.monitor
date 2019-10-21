@@ -25,7 +25,7 @@ class MonitorTest extends TestCase
             "from" => "Auth",
             "url" => "/login",
             "method" => "post",
-            "data" => [
+            "extra" => [
                 "email" => "test@asd.com",
                 "password" => "*****"
             ],
@@ -40,7 +40,6 @@ class MonitorTest extends TestCase
         $response->assertStatus(200);
 
         $this->assertCount(1, Log::all());
-
     }
 
 
@@ -57,7 +56,7 @@ class MonitorTest extends TestCase
             "from" => "Auth",
             "url" => "/login",
             "method" => "post",
-            "data" => [
+            "extra" => [
                 "email" => "test@asd.com",
                 "password" => "*****"
             ],
@@ -65,13 +64,11 @@ class MonitorTest extends TestCase
             "config" => [
                 "db" => 0,
                 "file" => 1,
-                "level"=> "warning",
+                "level" => "warning",
             ]
         ]);
 
         $response->assertOk();
-
-
     }
 
     /**
@@ -83,28 +80,28 @@ class MonitorTest extends TestCase
     public function get_info_about_logs()
     {
 
-       $response = $this->post('/', [
-        "title" => "Titulo",
-        "from" => "Auth",
-        "url" => "/login",
-        "method" => "post",
-        "data" => [
-            "email" => "test@asd.com",
-            "password" => "*****"
-        ],
-        "ip" => "123.123.123.2",
-        "config" => [
-            "db" => 1,
-            "file" => 1,
-            "level"=> "warning",
-        ]
-    ]);
+        $response = $this->post('/', [
+            "title" => "Titulo",
+            "from" => "Auth",
+            "url" => "/login",
+            "method" => "post",
+            "extra" => [
+                "email" => "test@asd.com",
+                "password" => "*****"
+            ],
+            "ip" => "123.123.123.2",
+            "config" => [
+                "db" => 1,
+                "file" => 1,
+                "level" => "warning",
+            ]
+        ]);
 
-       $response = $this->get('/?date=2019-10-04');
+        $response = $this->get('/?date=2019-10-21');
 
 
-       $response->assertJsonFragment([
-           'title' => 'Titulo',
-    ]);
+        $response->assertJsonFragment([
+            'title' => 'Titulo',
+        ]);
     }
 }

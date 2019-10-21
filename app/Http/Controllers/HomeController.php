@@ -29,7 +29,9 @@ class HomeController extends Controller
     {
 
 
+
         $data = str_replace(" ", " ", $data);
+        $data["extra"] = str_replace(" ", " ", $data["extra"]);
         // Replaces normal space with $nbsp;
         // First parameter is normal space, second one is %nbsp; in ascii (alt+255)
 
@@ -68,7 +70,7 @@ class HomeController extends Controller
             "from" => $data['from'],
             "url" => $data['url'],
             "method" => $data['method'],
-            "data" => json_encode($data['data']),
+            "extra" => json_encode($data['extra']),
             "ip" => $data['ip'],
             "level" => $data["config"]["level"],
         ]);
@@ -99,14 +101,12 @@ class HomeController extends Controller
                 "title" => $explodedLog[3],
                 "data" => json_decode($explodedLog[4])
             ];
-
-            break;
         }
 
 
         foreach ($db_log as $db_line) {
-            $db_line->data = json_decode($db_line->data);
-            $responseDb[$db_line->level] = $db_line;
+            $db_line->extra = json_decode($db_line->extra);
+            $responseDb[$db_line->level][] = $db_line;
         }
 
 
@@ -115,5 +115,4 @@ class HomeController extends Controller
             "file" => $responseFile
         ]);
     }
-    
 }
