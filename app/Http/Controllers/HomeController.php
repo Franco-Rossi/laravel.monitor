@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Log as Logs;
+use Illuminate\Support\Facades\Log as FileLog;
 use App\Log;
 use Storage;
 
@@ -13,6 +13,10 @@ class HomeController extends Controller
     {
 
         $data = $request->all();
+        $data['url'] = $request->url();
+        $data['method'] = $request->method();
+        $data['ip'] = $request->ip();
+
 
         if ($data["config"]["db"]) {
             $this->saveDB($data);
@@ -37,28 +41,28 @@ class HomeController extends Controller
 
         switch ($data["config"]["level"]) {
             case "emergency":
-                Logs::channel("monitor")->emergency($data["title"], $data);
+                FileLog::channel("monitor")->emergency($data["title"], $data);
                 break;
             case "alert":
-                Logs::channel("monitor")->alert($data["title"], $data);
+                FileLog::channel("monitor")->alert($data["title"], $data);
                 break;
             case "critical":
-                Logs::channel("monitor")->critical($data["title"], $data);
+                FileLog::channel("monitor")->critical($data["title"], $data);
                 break;
             case "error":
-                Logs::channel("monitor")->error($data["title"], $data);
+                FileLog::channel("monitor")->error($data["title"], $data);
                 break;
             case "warning":
-                Logs::channel("monitor")->warning($data["title"], $data);
+                FileLog::channel("monitor")->warning($data["title"], $data);
                 break;
             case "notice":
-                Logs::channel("monitor")->notice($data["title"], $data);
+                FileLog::channel("monitor")->notice($data["title"], $data);
                 break;
             case "info":
-                Logs::channel("monitor")->info($data["title"], $data);
+                FileLog::channel("monitor")->info($data["title"], $data);
                 break;
             default:
-                Logs::channel("monitor")->debug($data["title"], $data);
+                FileLog::channel("monitor")->debug($data["title"], $data);
                 break;
         }
     }
@@ -66,13 +70,13 @@ class HomeController extends Controller
     public function saveDB($data)
     {
         Log::create([
-            "title" => $data["title"],
+            "title" => $data['title'],
             "from" => $data['from'],
             "url" => $data['url'],
             "method" => $data['method'],
             "extra" => json_encode($data['extra']),
             "ip" => $data['ip'],
-            "level" => $data["config"]["level"],
+            "level" => $data['config']['level'],
         ]);
     }
 
