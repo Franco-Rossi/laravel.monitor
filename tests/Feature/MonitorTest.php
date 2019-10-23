@@ -24,13 +24,10 @@ class MonitorTest extends TestCase
         $response = $this->post('/', [
             "title" => "Titulo",
             "from" => "Auth",
-            "url" => "/login",
-            "method" => "post",
             "extra" => [
                 "email" => "test@asd.com",
                 "password" => "*****"
             ],
-            "ip" => "123.123.123.2",
             "config" => [
                 "db" => 1,
                 "file" => 1,
@@ -55,13 +52,10 @@ class MonitorTest extends TestCase
         $response = $this->post('/', [
             "title" => "Titulo",
             "from" => "Auth",
-            "url" => "/login",
-            "method" => "post",
             "extra" => [
                 "email" => "test@asd.com",
                 "password" => "*****"
             ],
-            "ip" => "123.123.123.2",
             "config" => [
                 "db" => 0,
                 "file" => 1,
@@ -84,13 +78,10 @@ class MonitorTest extends TestCase
         $response = $this->post('/', [
             "title" => "Titulo",
             "from" => "Auth",
-            "url" => "/login",
-            "method" => "post",
             "extra" => [
                 "email" => "test@asd.com",
                 "password" => "*****"
             ],
-            "ip" => "123.123.123.2",
             "config" => [
                 "db" => 1,
                 "file" => 1,

@@ -18,7 +18,6 @@ class CreateLogsTable extends Migration
             $table->string('title', 50)->nullable();
             $table->string('from', 25)->nullable();
             $table->string('url', 50)->nullable();
-            $table->string('method', 10)->nullable();
             $table->string('extra')->nullable();
             $table->string('ip', 20)->nullable();
             $table->string('level', 20)->nullable();

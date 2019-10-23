@@ -14,7 +14,6 @@ class HomeController extends Controller
 
         $data = $request->all();
         $data['url'] = $request->url();
-        $data['method'] = $request->method();
         $data['ip'] = $request->ip();
 
 
@@ -73,7 +72,6 @@ class HomeController extends Controller
             "title" => $data['title'],
             "from" => $data['from'],
             "url" => $data['url'],
-            "method" => $data['method'],
             "extra" => json_encode($data['extra']),
             "ip" => $data['ip'],
             "level" => $data['config']['level'],
